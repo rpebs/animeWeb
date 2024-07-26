@@ -1,10 +1,10 @@
 <template>
-  <div class="container mx-auto p-4 w-full">
-    <h1 class="text-2xl font-bold mb-4 text-left">
-      {{ categoryName }} Anime
-    </h1>
+  <div class="container mx-auto p-4">
+    <!-- Judul di kiri -->
+    <h1 class="text-2xl font-bold mb-4 text-left">{{ categoryName }} Anime</h1>
+
+    <!-- Spinner Loading -->
     <div v-if="isLoading" class="flex justify-center items-center h-screen">
-      <!-- Spinner loading -->
       <svg
         class="animate-spin h-12 w-12 text-blue-500"
         xmlns="http://www.w3.org/2000/svg"
@@ -25,15 +25,21 @@
         ></path>
       </svg>
     </div>
+
+    <!-- Tidak ada Anime -->
     <div v-if="!isLoading && animeList.length === 0" class="text-center mt-4">
       <p>No Anime Found</p>
     </div>
+
+    <!-- Anime List -->
     <div v-if="!isLoading && animeList.length > 0">
       <div
         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto"
       >
         <AnimeCard v-for="anime in animeList" :key="anime.id" :anime="anime" />
       </div>
+
+      <!-- Paginasi -->
       <div class="mt-4 text-center">
         <div class="join">
           <button
@@ -79,6 +85,9 @@ export default {
   },
   mounted() {
     this.fetchAnimeData();
+  },
+  watch: {
+    "$route.params.category": "fetchAnimeData", // Watcher untuk perubahan parameter kategori
   },
   methods: {
     async fetchAnimeData(url = "") {
