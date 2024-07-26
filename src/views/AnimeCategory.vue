@@ -1,10 +1,8 @@
 <template>
-  <div class="container mx-auto p-4">
-    <!-- Judul di kiri -->
-    <h1 class="text-2xl font-bold mb-4 text-left">{{ categoryName }} Anime</h1>
-
-    <!-- Spinner Loading -->
+  <div class="container mx-auto px-4 mt-4">
+    <h1 class="text-2xl font-bold mb-4">{{ categoryName }} Anime</h1>
     <div v-if="isLoading" class="flex justify-center items-center h-screen">
+      <!-- Spinner loading -->
       <svg
         class="animate-spin h-12 w-12 text-blue-500"
         xmlns="http://www.w3.org/2000/svg"
@@ -25,21 +23,15 @@
         ></path>
       </svg>
     </div>
-
-    <!-- Tidak ada Anime -->
     <div v-if="!isLoading && animeList.length === 0" class="text-center mt-4">
       <p>No Anime Found</p>
     </div>
-
-    <!-- Anime List -->
     <div v-if="!isLoading && animeList.length > 0">
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl mx-auto"
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl w-full mx-auto "
       >
         <AnimeCard v-for="anime in animeList" :key="anime.id" :anime="anime" />
       </div>
-
-      <!-- Paginasi -->
       <div class="mt-4 text-center">
         <div class="join">
           <button
@@ -77,7 +69,7 @@ export default {
     return {
       animeList: [],
       isLoading: true,
-      categoryName: '',
+      categoryName: "",
       paginationLinks: {},
       currentPage: 1,
       totalPages: 1,
@@ -87,40 +79,39 @@ export default {
     this.fetchAnimeData();
   },
   watch: {
-    '$route.params.category': 'fetchAnimeData',
+    '$route.params.category': 'fetchAnimeData'
   },
   methods: {
-    async fetchAnimeData(url = '') {
+    async fetchAnimeData() {
       const category = this.$route.params.category;
       this.categoryName = category.charAt(0).toUpperCase() + category.slice(1);
-      
-      if (!url) {
-        url = `https://kitsu.io/api/edge/anime?filter[categories]=${category}&page[number]=1&page[size]=12`;
-      }
 
+      // Construct the URL based on the current category and page number
+      const url = `https://kitsu.io/api/edge/anime?filter[categories]=${category}&page[number]=${this.currentPage}&page[size]=12`;
       this.isLoading = true;
-      
       try {
         const response = await axios.get(url);
         this.animeList = response.data.data;
         this.paginationLinks = response.data.links;
 
-        // Extract current page from URL if present, else default to 1
-        const urlParams = new URLSearchParams(new URL(url).search);
+        // Safeguard to ensure URLs are valid before creating URL object
+        const firstPageUrl = this.paginationLinks.first || url;
+        const lastPageUrl = this.paginationLinks.last;
+
+        // Extract current page number from URL
+        const urlParams = new URLSearchParams(new URL(firstPageUrl).search);
         this.currentPage = parseInt(urlParams.get('page[number]')) || 1;
 
         // Extract total pages from 'last' link if present
-        const lastPageUrl = this.paginationLinks.last;
         if (lastPageUrl) {
           const lastPageParams = new URLSearchParams(new URL(lastPageUrl).search);
-          this.totalPages = Math.ceil(
-            parseInt(lastPageParams.get('page[number]')) / 12
-          );
+          this.totalPages = Math.ceil(parseInt(lastPageParams.get('page[number]')) / 12);
         } else {
-          this.totalPages = 1;  // Default value if 'last' link is not present
+          this.totalPages = 1; // Default value if 'last' link is not present
         }
+
       } catch (error) {
-        console.error('Failed to fetch anime by category:', error);
+        console.error("Failed to fetch anime by category:", error);
       } finally {
         this.isLoading = false;
       }
@@ -128,3 +119,8 @@ export default {
   },
 };
 </script>
+
+
+<style scoped>
+/* Add any additional styles here */
+</style>
