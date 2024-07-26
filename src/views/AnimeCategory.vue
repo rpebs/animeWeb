@@ -77,7 +77,7 @@ export default {
     return {
       animeList: [],
       isLoading: true,
-      categoryName: "",
+      categoryName: '',
       paginationLinks: {},
       currentPage: 1,
       totalPages: 1,
@@ -87,28 +87,40 @@ export default {
     this.fetchAnimeData();
   },
   watch: {
-    "$route.params.category": "fetchAnimeData", // Watcher untuk perubahan parameter kategori
+    '$route.params.category': 'fetchAnimeData',
   },
   methods: {
-    async fetchAnimeData(url = "") {
+    async fetchAnimeData(url = '') {
       const category = this.$route.params.category;
       this.categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+      
       if (!url) {
         url = `https://kitsu.io/api/edge/anime?filter[categories]=${category}&page[number]=1&page[size]=12`;
       }
+
       this.isLoading = true;
+      
       try {
         const response = await axios.get(url);
         this.animeList = response.data.data;
         this.paginationLinks = response.data.links;
-        this.currentPage = new URL(url).searchParams.get("page[number]");
-        this.totalPages = Math.ceil(
-          parseInt(
-            new URL(this.paginationLinks.last).searchParams.get("page[number]")
-          ) / 12
-        );
+
+        // Extract current page from URL if present, else default to 1
+        const urlParams = new URLSearchParams(new URL(url).search);
+        this.currentPage = parseInt(urlParams.get('page[number]')) || 1;
+
+        // Extract total pages from 'last' link if present
+        const lastPageUrl = this.paginationLinks.last;
+        if (lastPageUrl) {
+          const lastPageParams = new URLSearchParams(new URL(lastPageUrl).search);
+          this.totalPages = Math.ceil(
+            parseInt(lastPageParams.get('page[number]')) / 12
+          );
+        } else {
+          this.totalPages = 1;  // Default value if 'last' link is not present
+        }
       } catch (error) {
-        console.error("Failed to fetch anime by category:", error);
+        console.error('Failed to fetch anime by category:', error);
       } finally {
         this.isLoading = false;
       }
@@ -116,7 +128,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-/* Add any additional styles here */
-</style>
