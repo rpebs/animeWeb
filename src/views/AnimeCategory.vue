@@ -28,7 +28,7 @@
     </div>
     <div v-if="!isLoading && animeList.length > 0">
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl w-full mx-auto "
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl w-full mx-auto"
       >
         <AnimeCard v-for="anime in animeList" :key="anime.id" :anime="anime" />
       </div>
@@ -78,48 +78,70 @@ export default {
   mounted() {
     this.fetchAnimeData();
   },
-  watch: {
-    '$route.params.category': 'fetchAnimeData'
-  },
   methods: {
-    async fetchAnimeData() {
+    async fetchAnimeData(url = "") {
       const category = this.$route.params.category;
       this.categoryName = category.charAt(0).toUpperCase() + category.slice(1);
 
-      // Construct the URL based on the current category and page number
-      const url = `https://kitsu.io/api/edge/anime?filter[categories]=${category}&page[number]=${this.currentPage}&page[size]=12`;
+      // Build URL if not provided
+      if (!url) {
+        url = `https://kitsu.io/api/edge/anime?filter[categories]=${category}&page[number]=${this.currentPage}&page[size]=12`;
+      }
+
       this.isLoading = true;
       try {
         const response = await axios.get(url);
+
+        // Process data and links
         this.animeList = response.data.data;
         this.paginationLinks = response.data.links;
 
-        // Safeguard to ensure URLs are valid before creating URL object
-        const firstPageUrl = this.paginationLinks.first || url;
-        const lastPageUrl = this.paginationLinks.last;
-
-        // Extract current page number from URL
-        const urlParams = new URLSearchParams(new URL(firstPageUrl).search);
-        this.currentPage = parseInt(urlParams.get('page[number]')) || 1;
-
-        // Extract total pages from 'last' link if present
-        if (lastPageUrl) {
-          const lastPageParams = new URLSearchParams(new URL(lastPageUrl).search);
-          this.totalPages = Math.ceil(parseInt(lastPageParams.get('page[number]')) / 12);
-        } else {
-          this.totalPages = 1; // Default value if 'last' link is not present
-        }
-
+        // Extract and validate pagination information
+        this.currentPage = this.extractPageNumber(url);
+        this.totalPages = this.extractTotalPages(this.paginationLinks.last);
       } catch (error) {
         console.error("Failed to fetch anime by category:", error);
       } finally {
         this.isLoading = false;
       }
     },
+    extractPageNumber(url) {
+      try {
+        if (!url) return 1;
+
+        // Ensure the URL is valid
+        const urlObj = new URL(url, "https://kitsu.io"); // Provide a base URL to handle relative URLs
+        const urlParams = new URLSearchParams(urlObj.search);
+        return parseInt(urlParams.get("page[number]")) || 1;
+      } catch (error) {
+        console.error("Error extracting page number:", error);
+        return 1; // Default to 1 in case of error
+      }
+    },
+    extractTotalPages(lastPageUrl) {
+      try {
+        if (lastPageUrl) {
+          // Ensure lastPageUrl is valid
+          const lastPageUrlObj = new URL(lastPageUrl);
+          const lastPageParams = new URLSearchParams(lastPageUrlObj.search);
+          return parseInt(lastPageParams.get("page[number]")) || 1;
+        }
+        return 1; // Default to 1 if no lastPageUrl
+      } catch (error) {
+        console.error("Error extracting total pages:", error);
+        return 1;
+      }
+    },
+  },
+  watch: {
+    "$route.params.category": function (newCategory) {
+      // Reset currentPage to 1 when category changes
+      this.currentPage = 1;
+      this.fetchAnimeData(); // Fetch new data based on the new category
+    },
   },
 };
 </script>
-
 
 <style scoped>
 /* Add any additional styles here */
