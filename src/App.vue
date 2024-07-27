@@ -1,19 +1,21 @@
 <template>
-  <div class="max-w-full">
+  <div class="min-h-screen max-w-full">
     <Navbar />
     <router-view />
+    <Footer />
   </div>
 </template>
 
 <script>
-import axios from "axios";
 
+import Footer from "./components/Footer.vue";
 import Navbar from "./components/Navbar.vue";
 
 
 export default {
   components: {
     Navbar,
+    Footer,
   },
 };
 </script>

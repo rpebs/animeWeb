@@ -1,5 +1,6 @@
 <template>
-    <div class="anime-card card bg-base-100 shadow-xl w-72 flex-shrink-0">
+    <div class="anime-card card bg-base-100 shadow-xl w-72 flex-shrink-0 cursor-pointer">
+      <router-link :to="`/detail/${anime.attributes.slug}`">
       <figure class="card-image">
         <img :src="anime.attributes.posterImage.medium" alt="Anime Poster" class="w-full h-auto rounded-lg"/>
       </figure>
@@ -13,6 +14,7 @@
           </span>
         </p>
       </div>
+      </router-link>
     </div>
   </template>
   

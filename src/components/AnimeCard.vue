@@ -1,18 +1,21 @@
 <template>
-  <div class="anime-card card bg-base-100 shadow-xl flex-shrink-0">
-    <figure class="card-image">
-      <img :src="anime.attributes.posterImage.medium" alt="Anime Poster" class="w-full h-auto rounded-lg"/>
-    </figure>
-    <div class="card-body p-4">
-      <h2 class="card-title text-xl mb-2">{{ anime.attributes.titles.en || 'No Title' }}</h2>
-      <p>Total Episodes: {{ anime.attributes.episodeCount || 'Ongoing' }}</p>
-      <p>
-        Rating:
-        <span v-for="(star, index) in stars" :key="index" class="star text-yellow-400 mr-1">
-          <font-awesome-icon :icon="star" />
-        </span>
-      </p>
-    </div>
+  <div class="anime-card card bg-base-100 shadow-xl flex-shrink-0 cursor-pointer">
+    <router-link :to="`/detail/${anime.attributes.slug}`">
+      <figure class="card-image">
+        <img :src="anime.attributes.posterImage.medium" alt="Anime Poster" class="w-full h-auto rounded-lg" />
+      </figure>
+      <div class="card-body p-4">
+
+        <h2 class="card-title text-xl mb-2">{{ anime.attributes.titles.en || 'No Title' }}</h2>
+        <p>Total Episodes: {{ anime.attributes.episodeCount || 'Ongoing' }}</p>
+        <p>
+          Rating:
+          <span v-for="(star, index) in stars" :key="index" class="star text-yellow-400 mr-1">
+            <font-awesome-icon :icon="star" />
+          </span>
+        </p>
+      </div>
+    </router-link>
   </div>
 </template>
 

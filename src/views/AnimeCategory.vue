@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 mt-4 mb-4">
+  <div class="p-4 mt-4 mb-4">
     <h1 class="text-2xl font-bold mb-4">{{ categoryName }} Anime</h1>
     <div v-if="isLoading" class="flex justify-center items-center h-screen">
       <!-- Spinner loading -->
@@ -28,7 +28,7 @@
     </div>
     <div v-if="!isLoading && animeList.length > 0">
       <div
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 max-w-7xl w-full mx-auto"
+        class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"
       >
         <AnimeCard v-for="anime in animeList" :key="anime.id" :anime="anime" />
       </div>
@@ -85,7 +85,7 @@ export default {
 
       // Build URL if not provided
       if (!url) {
-        url = `https://kitsu.io/api/edge/anime?filter[categories]=${category}&page[number]=${this.currentPage}&page[size]=12`;
+        url = `https://kitsu.io/api/edge/anime?filter[categories]=${category}&page[number]=${this.currentPage}&page[size]=20`;
       }
 
       this.isLoading = true;
