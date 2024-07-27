@@ -16,6 +16,7 @@ import AnimeCard from "../components/AnimeCard.vue";
 import TrendingAnime from "../components/TrendingAnime.vue";
 import HeroImage from "../components/HeroImage.vue";
 
+
 export default {
   components: {
     AnimeCard,

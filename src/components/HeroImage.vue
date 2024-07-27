@@ -23,6 +23,8 @@
 <script>
 import { EventBus } from '../event-bus.js';
 import { ref, onMounted, onUnmounted, computed } from 'vue';
+import lightBanner from "../assets/img/banner-light.png";
+import darkBanner from "../assets/img/banner-dark.avif";
 
 export default {
   setup() {
@@ -31,8 +33,8 @@ export default {
     const updateBackgroundImage = () => {
       const theme = localStorage.getItem('theme') || 'light';
       backgroundImage.value = theme === 'dark'
-        ? '/src/assets/img/banner-dark.avif'
-        : '/src/assets/img/banner-light.png';
+        ? darkBanner
+        : lightBanner;  
     };
 
     onMounted(() => {
