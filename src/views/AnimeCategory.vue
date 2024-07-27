@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 mt-4">
+  <div class="container mx-auto px-4 mt-4 mb-4">
     <h1 class="text-2xl font-bold mb-4">{{ categoryName }} Anime</h1>
     <div v-if="isLoading" class="flex justify-center items-center h-screen">
       <!-- Spinner loading -->
@@ -99,6 +99,9 @@ export default {
         // Extract and validate pagination information
         this.currentPage = this.extractPageNumber(url);
         this.totalPages = this.extractTotalPages(this.paginationLinks.last);
+
+        // Scroll to top after data fetch
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       } catch (error) {
         console.error("Failed to fetch anime by category:", error);
       } finally {
