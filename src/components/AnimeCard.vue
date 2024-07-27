@@ -1,14 +1,14 @@
 <template>
-  <div class="anime-card card bg-base-100 shadow-xl">
+  <div class="anime-card card bg-base-100 shadow-xl flex-shrink-0">
     <figure class="card-image">
-      <img :src="anime.attributes.posterImage.medium" alt="Anime Poster" />
+      <img :src="anime.attributes.posterImage.medium" alt="Anime Poster" class="w-full h-auto rounded-lg"/>
     </figure>
-    <div class="card-body">
-      <h2 class="card-title">{{ anime.attributes.titles.en || 'No Title' }}</h2>
-      <p>Total Episodes: {{ anime.attributes.episodeCount || 'N/A' }}</p>
+    <div class="card-body p-4">
+      <h2 class="card-title text-xl mb-2">{{ anime.attributes.titles.en || 'No Title' }}</h2>
+      <p>Total Episodes: {{ anime.attributes.episodeCount || 'Ongoing' }}</p>
       <p>
         Rating:
-        <span v-for="(star, index) in stars" :key="index" class="star">
+        <span v-for="(star, index) in stars" :key="index" class="star text-yellow-400 mr-1">
           <font-awesome-icon :icon="star" />
         </span>
       </p>
@@ -41,28 +41,5 @@ export default {
 </script>
 
 <style scoped>
-.anime-card {
-  width: 300px; /* Adjust card width */
-  flex-shrink: 0; /* Prevent shrinking */
-}
-
-.card-image img {
-  width: 100%; /* Make image fit card width */
-  height: auto; /* Maintain aspect ratio */
-  border-radius: 0.5rem; /* Optional: Rounded corners */
-}
-
-.card-body {
-  padding: 16px;
-}
-
-.card-title {
-  font-size: 1.25rem; /* Adjust title font size */
-  margin-bottom: 8px;
-}
-
-.star {
-  color: #f5c518; /* Gold color */
-  margin-right: 2px; /* Spacing between stars */
-}
+/* Remove scoped styles as we are using Tailwind CSS */
 </style>

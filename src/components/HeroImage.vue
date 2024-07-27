@@ -15,7 +15,7 @@
             <p class="mb-5">
               Tempat anda melihat segala informasi mengenai anime yang ada saat ini!
             </p>
-            <button class="btn btn-active btn-neutral" @click="scrollToContent">
+            <button class="btn btn-active btn-neutral" @click="scrollToContent"><font-awesome-icon icon="fa-regular fa-circle-down" /> 
               Go There!
             </button>
           </div>

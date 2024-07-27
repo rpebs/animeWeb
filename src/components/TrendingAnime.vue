@@ -5,7 +5,7 @@
       &#10094; <!-- Unicode for left arrow -->
     </button>
     <div class="anime-list" ref="animeList">
-      <AnimeCard
+      <ScrollList
         v-for="anime in animeList"
         :key="anime.id"
         :anime="anime"
@@ -28,11 +28,11 @@
 
 <script>
 import axios from 'axios';
-import AnimeCard from './AnimeCard.vue';
+import ScrollList from './ScrollList.vue';
 
 export default {
   components: {
-    AnimeCard,
+    ScrollList,
   },
   data() {
     return {
