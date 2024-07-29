@@ -6,7 +6,7 @@
       </figure>
       <div class="card-body p-4">
 
-        <h2 class="card-title text-xl mb-2">{{ anime.attributes.titles.en || 'No Title' }}</h2>
+        <h2 class="card-title text-xl mb-2">{{ anime.attributes.canonicalTitle || 'No Title' }}</h2>
         <p>Total Episodes: {{ anime.attributes.episodeCount || 'Ongoing' }}</p>
         <p>
           Rating:

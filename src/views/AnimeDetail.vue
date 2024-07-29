@@ -1,7 +1,7 @@
 <template>
     <div v-if="!isLoading">
         <div class="hero h-80 bg-cover bg-center mb-4"
-            :style="{ backgroundImage: `url(${anime.attributes.coverImage.original})` }">
+            :style="{ backgroundImage: `url(${anime.attributes.coverImage?.original || anime.attributes.posterImage.large})` }">
             <div class="hero-overlay bg-opacity-60"></div>
         </div>
         <div class="container p-4 mx-auto w-full mt-4">
@@ -14,7 +14,7 @@
                         <span>Watch Trailer</span></button>
                 </div>
                 <div class="lg:col-span-2 mt-12 lg:mt-0">
-                    <h1 class="text-3xl font-bold">{{ anime.attributes.titles.en || 'No Title' }} ({{ new
+                    <h1 class="text-3xl font-bold">{{ anime.attributes.canonicalTitle || 'No Title' }} ({{ new
                         Date(anime.attributes.startDate).getFullYear() }})</h1>
                     <p class="text-lg mb-1">{{ anime.attributes.titles.ja_jp }}</p>
                     <p class="text-lg mb-4">Rating: {{ anime.attributes.averageRating || 'N/A' }}</p>
