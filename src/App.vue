@@ -1,7 +1,10 @@
 <template>
-  <div class="min-h-screen max-w-full">
+  <div class="h-screen max-w-full">
     <Navbar />
+    <div class="mb-auto">
     <router-view />
+  </div>
+  
     <Footer />
   </div>
 </template>

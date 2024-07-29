@@ -3,12 +3,18 @@ import HomePage from '../views/Home.vue';
 import AnimeCategory from '../views/AnimeCategory.vue';
 import AnimeDetail from '../views/AnimeDetail.vue';
 import AllAnime from '../views/AllAnime.vue';
+import News from '../views/News.vue';
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: HomePage,
+  },
+  {
+    path: '/other/news',
+    name: 'News',
+    component: News,
   },
   {
     path: '/category/:category',

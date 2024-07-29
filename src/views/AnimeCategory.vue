@@ -1,27 +1,12 @@
 <template>
   <div class="p-4 mt-4 mb-4">
     <h1 class="text-2xl font-bold mb-4">{{ categoryName }} Anime</h1>
-    <div v-if="isLoading" class="flex justify-center items-center h-screen">
-      <!-- Spinner loading -->
-      <svg
-        class="animate-spin h-12 w-12 text-blue-500"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          class="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          stroke-width="4"
-        ></circle>
-        <path
-          class="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 1 1 16 0A8 8 0 0 1 4 12Zm8-6a6 6 0 0 0-5.14 9.14A6.002 6.002 0 0 1 12 6Z"
-        ></path>
-      </svg>
+    <div v-if="isLoading" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <div v-for="n in 10" :key="n" class="animate-pulse">
+        <div class="h-48 bg-gray-300 rounded-md"></div>
+        <div class="mt-2 h-4 bg-gray-300 rounded"></div>
+        <div class="mt-1 h-4 bg-gray-300 rounded w-3/4"></div>
+      </div>
     </div>
     <div v-if="!isLoading && animeList.length === 0" class="text-center mt-4">
       <p>No Anime Found</p>
